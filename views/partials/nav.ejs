@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blogify</title>
+  <style>
+    /* Body and General Styles */
+    body {
+      font-family: 'Inter', 'Roboto', sans-serif;
+      background-color: #0f172a;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      padding-top: 70px;
+    }
+
+    /* Navbar Styling */
+    .navbar {
+      width: 100%;
+      background-color: rgba(30, 41, 59, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar a {
+      color: #cbd5e1;
+      text-decoration: none;
+      margin: 0 20px;
+      font-weight: 500;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .navbar a:hover {
+      color: #fff;
+    }
+
+    .navbar a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background-color: #6366f1;
+      transition: width 0.3s ease;
+    }
+
+    .navbar a:hover::after {
+      width: 100%;
+    }
+
+    .navbar .navbar-brand {
+      font-size: 24px;
+      font-weight: bold;
+      background: linear-gradient(to right, #6366f1, #8b5cf6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-left: 0;
+    }
+
+    .navbar .navbar-brand:hover::after {
+      width: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Dropdown Styling */
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown input[type="checkbox"] {
+      display: none;
+    }
+
+    .dropdown label {
+      cursor: pointer;
+      color: #fff;
+      background-color: #4f46e5;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dropdown label:after {
+      content: '▼';
+      font-size: 12px;
+      transition: transform 0.3s ease;
+    }
+
+    .dropdown input[type="checkbox"]:checked + label:after {
+      transform: rotate(180deg);
+    }
+
+    .dropdown label:hover {
+      background-color: #4338ca;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 120%;
+      right: 0;
+      background-color: #1e293b;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      padding: 8px;
+      min-width: 180px;
+      transform-origin: top right;
+      animation: dropdownOpen 0.3s ease forwards;
+    }
+
+    @keyframes dropdownOpen {
+      from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .dropdown input[type="checkbox"]:checked + label + .dropdown-menu {
+      display: block;
+    }
+
+    .dropdown-menu a {
+      display: block;
+      padding: 12px 16px;
+      color: #cbd5e1;
+      text-decoration: none;
+      margin: 0;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .dropdown-menu a:hover {
+      background-color: #2d3748;
+      color: #fff;
+    }
+
+    .dropdown-menu a::after {
+      display: none;
+    }
+
+    /* Main Content Area */
+    #all-blogs {
+      margin-top: 50px;
+      padding: 0 24px;
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 12px 16px;
+      }
+
+      .nav-links {
+        gap: 5px;
+      }
+
+      .navbar a {
+        margin: 0 10px;
+        font-size: 14px;
+      }
+
+      .dropdown label {
+        padding: 8px 16px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="/" class="navbar-brand">Blogify</a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <% if (user) { %>
+        <a href="/blog/add-new">Add Blog</a>
+        <div class="dropdown">
+          <input type="checkbox" id="dropdown">
+          <label for="dropdown"><%= user.fullName %></label>
+          <div class="dropdown-menu">
+            <a href="/user/logout">Logout</a>
+          </div>
+        </div>
+      <% } else { %>
+        <a href="/user/signin">Sign In</a>
+        <a href="/user/signup">Create Account</a>
+      <% } %>
+    </div>
+  </nav>
+
+  <div id="all-blogs">
+    <!-- Blogs will be rendered here -->
+  </div>
+
+  <script>
+    function scrollToBlogs() {
+      const blogsSection = document.getElementById('all-blogs');
+      if (blogsSection) {
+        blogsSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  </script>
+</body>
+</html>
